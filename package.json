@@ -1,0 +1,24 @@
+{
+  "name": "nodepostgres",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "conf-win": "cd bin/windows && configuredb.bat",
+    "conf-lin": "chmod +x ./bin/linux/env.sh && chmod +x ./bin/linux/configuredb.sh && sh ./bin/linux/configuredb.sh",
+    "start": "node ./src/server.js",
+    "watch": "nodemon ./src/server.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^1.20.0",
+    "cors": "^2.8.5",
+    "dotenv": "^16.0.1",
+    "express": "^4.18.1",
+    "knex": "^2.1.0",
+    "pg": "^8.7.3"
+  }
+}

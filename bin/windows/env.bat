@@ -1,0 +1,6 @@
+SET PGDATABASE=challenge.db
+SET PGUSER=nmamou
+SET PGPASSWORD=digitalvalue
+SET PGHOST=localhost
+SET PGPORT=5432
+
