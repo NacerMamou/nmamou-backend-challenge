@@ -5,13 +5,13 @@ const categoriesRouter = express.Router();
 const {
   getCategories,
   getCategoriesAndChildren,
-  // getCategoriesAndAll,
+  getCategoriesAndAll,
 } = require("../controllers/categories.controller");
 
 // Associating handlers for the routes
 categoriesRouter.get("/", getCategories);
 categoriesRouter.get("/children", getCategoriesAndChildren);
-// categoriesRouter.get("/all", getCategoriesAndAll);
+categoriesRouter.get("/all", getCategoriesAndAll);
 
 // Exporting the categoryRouter to be used in app.js
 module.exports = categoriesRouter;
