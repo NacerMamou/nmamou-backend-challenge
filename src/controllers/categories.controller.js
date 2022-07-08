@@ -20,38 +20,38 @@ async function getCategories(request, response) {
 // It will add the children field for each category
 // It uses the function getChildren to get data from database
 
-// async function getCategoriesAndChildren(request, response) {
-//   getCategoriesFromDatabase()
-//     .then((data) => {
-//       let childrenPromises = new Array();
-//       // We iterate to get children of each category
-//       for (let i = 0; i < data.length; i++) {
-//         // All the database queries promises are fired asynchronously
-//         let children = getChildren(data[i]);
+async function getCategoriesAndChildren(request, response) {
+  getCategoriesFromDatabase()
+    .then((data) => {
+      let childrenPromises = new Array();
+      // We iterate to get children of each category
+      for (let i = 0; i < data.length; i++) {
+        // All the database queries promises are fired asynchronously
+        let children = getChildren(data[i]);
 
-//         // Then they are pushed to a table to get track of them later
-//         childrenPromises.push(children);
+        // Then they are pushed to a table to get track of them later
+        childrenPromises.push(children);
 
-//         // When a children Promise resolves
-//         // We set the children field of the current category
-//         children.then((children) => {
-//           data[i].children = children;
-//         });
-//       }
+        // When a children Promise resolves
+        // We set the children field of the current category
+        children.then((children) => {
+          data[i].children = children;
+        });
+      }
 
-//       // To avoid blocking the event loop when awaiting all promises inside the for loop
-//       // We use Promise.all to assign a callback when all the promises resolve
-//       // The callback consists of sending back the response containg the data
-//       // This will make code performant and non blocking
-//       Promise.all([...childrenPromises]).then(() => {
-//         response.status(200).json(data);
-//       });
-//     })
-//     .catch((err) => {
-//       console.log(err);
-//       return response.status(404).json(err);
-//     });
-// }
+      // To avoid blocking the event loop when awaiting all promises inside the for loop
+      // We use Promise.all to assign a callback when all the promises resolve
+      // The callback consists of sending back the response containg the data
+      // This will make code performant and non blocking
+      Promise.all([...childrenPromises]).then(() => {
+        response.status(200).json(data);
+      });
+    })
+    .catch((err) => {
+      console.log(err);
+      return response.status(404).json(err);
+    });
+}
 
 // // This function does the same job as the getCategoriesAndChildren function
 // // It will add the ancestors field for each category
@@ -121,24 +121,24 @@ async function getCategoriesFromDatabase() {
 // This function makes a database query to get the children of a category
 // The fetched data are resolved through a promise
 // If an errors occurs, it will be rejected
-// async function getChildren(category) {
-//   return new Promise((resolve, reject) => {
-//     knex
-//       .select("id", "name")
-//       .from("categories")
-//       .where("parent_id", category.id)
-//       .then((data) => {
-//         resolve(data);
-//       })
-//       .catch((err) => {
-//         reject(
-//           new Error(
-//             `Failed to get children of category ${category.name} : ${err}`
-//           )
-//         );
-//       });
-//   });
-// }
+async function getChildren(category) {
+  return new Promise((resolve, reject) => {
+    knex
+      .select("id", "name")
+      .from("categories")
+      .where("parent_id", category.id)
+      .then((data) => {
+        resolve(data);
+      })
+      .catch((err) => {
+        reject(
+          new Error(
+            `Failed to get children of category ${category.name} : ${err}`
+          )
+        );
+      });
+  });
+}
 
 // // This function makes a database query to get the ancestors of a category
 // // The fetched data are resolved through a promise
@@ -170,6 +170,6 @@ async function getCategoriesFromDatabase() {
 
 module.exports = {
   getCategories,
-  // getCategoriesAndChildren,
+  getCategoriesAndChildren,
   // getCategoriesAndAll,
 };
